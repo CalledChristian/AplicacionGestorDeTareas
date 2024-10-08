@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!--Importando JQuery (de preferencia en head, ya que debe preceder al script)-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style>
+        body{
+            background-image: url("/assets/assets/img/template/Rapid/hero-bg.jpg");
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Asegura que el body tenga 100% de la altura de la ventana */
+            background-size: cover; /* La imagen cubre el espacio */
+            background-position: center; /* La imagen está centrada */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+        }
+        table {
+            border-collapse: separate; /* Necesario para que los bordes se apliquen correctamente */
+            border-spacing: 0; /* Elimina el espacio entre las celdas */
+            width: 100%;
+            border: 2px solid #333; /* Define un borde */
+            border-radius: 10px; /* Aplica el borde redondeado */
+        }
+
+        /* Estilos para las celdas */
+        td, th {
+            padding: 10px;
+            border: 1px solid #ddd; /* Borde interno para las celdas */
+
+        }
+
+        /* Opcional: Bordes redondeados específicos para las esquinas superiores */
+        table tr:first-child th:first-child {
+            border-top-left-radius: 10px;
+        }
+        table tr:first-child th:last-child {
+            border-top-right-radius: 10px;
+        }
+        table tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+        table tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/tareas}">Gestor de Tareas</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/tareas}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <!--<li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li> -->
+                <li class="nav-item">
+                <!--mostrar este botón solo si es el super usuario (tambien se podria hacer con th:if-->
+                <!--<input sec:authorize="hasAnyAuthority('Super Usuario')" id="botonColor" type="submit" class="btn btn-warning" value="Cambiar de Fondo"> -->
+                </li>
+            </ul>
+            <!--El atributo sec:authorize=”isAnonymous()”
+            permite validar si el usuario NO ha iniciado sesión.-->
+            <!--similar a th:if, pero para parámetros de Spring Security-->
+            <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}" class="btn btn-success" type="submit">Iniciar Sesión</a>
+            </div>
+            <!--<form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> -->
+
+            <!--El atributo sec:authorize=”isAuthenticated()”
+           permite validar si el usuario Sí ha iniciado sesión.-->
+            <div sec:authorize="isAuthenticated()">
+                <!-- para insertar el nombre del usuario logueado con sec:authentication="name"-->
+                <!--<span class="nav-link active" aria-current="page">Bienvenido <span sec:authentication="name"></span></span>-->
+                <!--forma2-->
+                <!--En Spring Security, el enlace a la ruta /logout debe ser un formulario.-->
+                <form th:action="@{/logout}" method="post">
+                    <span style="color:white;margin-right:10px" th:text="|Bienvenido ${session.usuario.nombre} ${session.usuario.apellido}|"></span>
+                    <input class="btn btn-success" type="submit" value="Cerrar Sesión">
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+    <br>
+<div class="container">
+    <h2>Mis Tareas</h2>             <!-- con th:href se pone la ruta completa + parametros en url-->
+    <a class="btn btn-dark mt-4 mb-4" th:href="@{/tareas/nuevo}">Nueva Tarea</a>
+    <div id="alert3" th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+    <div id="alert2" th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-danger" role="alert"></div>
+    <div id="alert1" style="display:none" class="alert alert-danger" role="alert">Debe Ingresar Texto</div>
+    <!--Notar que con JQuery , no ponemos como atributo del form : onsubmit="return funcion()"
+    como en javascript puro-->
+    <form id="form1" method="post" th:action="@{/tareas/buscar}" >
+        <div class="row">
+            <div class="col-8">
+                <input name="idUser" th:value="${session.usuario.id}" type="hidden">
+                <input id="text1" name="texto" class="form-control mb-3" type="text" placeholder="Ingrese título o descripción de la tarea" aria-label="Search">
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a class="btn btn-danger" th:href="@{/tareas}">Limpiar</a>
+            </div>
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+        <tr class="table-dark">
+            <th>N*</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Prioridad</th>
+            <th>Fecha Límite</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-light" th:each="tarea, indice : ${listaTareas}">
+            <td th:text="${indice.index + 1}"></td>
+            <td th:text="${tarea.titulo}"></td>
+            <td th:text="${tarea.descripcion}"></td>
+            <td th:text="${tarea.prioridad.nombre}"></td>
+            <!--formatear la fecha con thymleaf-->
+            <td th:text="${#dates.format(tarea.fechaLimite, 'dd/MM/yyyy')}"></td>
+            <td><a th:href="@{'/tareas/editar'+'?id='+${tarea.id}}" class="btn btn-warning">Editar</a>
+            </td>
+            <td><a th:href="@{'/tareas/borrar'+'?id='+${tarea.id}}" class="btn btn-danger" >Borrar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- script JQuery-->
+<script>
+    $(document).ready(function(){
+
+        //variable global
+        var alerta2 = $("#alert2");
+        var alerta3 = $("#alert3");
+
+        $("#form1").submit(function (event) {
+            //accedemos al elemento del form (buscador) y obtenemos su valor con .val();
+            var texto = $("#text1").val();
+            var alerta1 = $("#alert1");
+
+            //si el texto no es vacio
+            if(texto !== ""){
+                //enviamos el formulario
+                return true;
+            }else{
+                //evitamos el envio del form con:
+                event.preventDefault();
+                //mostrarmos la alerta
+                //show(500) --> 500ms _ 0.5seg en mostrar la alerta
+                //delay(1000) --> 1000ms _ 1seg en mantener mostrada la alerta
+                //hide(500);--> 500ms _ 0.5seg en ocultar la alerta
+                alerta1.show(500).delay(3000).hide(500);
+                //no enviamos el formulario
+                return false;
+            }
+        })
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        //cuando demos click al boton:
+        $("#botonColor").click(function () {
+            //accedemos al "body" de la pagina y con css , cambiamos su atributo background color
+            $("body").css('background-color', getRandomColor());
+        });
+        //para la alerta 2 que se muestra cuando no hay coincidencias de busqueda
+        //la mantenemos por 4 segundos con delay y la ocultamos con hide en 0.5seg
+        alerta2.delay(3000).hide(500);
+        //para la alerta 3 que se muestra cuando creamos o editamos tarea
+        //la mantenemos por 4 segundos con delay y la ocultamos con hide en 0.5seg
+        alerta3.delay(4000).hide(500);
+    })
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

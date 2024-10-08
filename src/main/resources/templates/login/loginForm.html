@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.0/examples/sign-in/signin.css"/>
+    <title>Ingreso al sistema</title>
+    <!--css interno para la alerta -->
+    <style>
+        /* Estilos para la alerta y la transición */
+        /*la alerta es de clase : alert alert-danger */
+        .alert alert-danger {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+            display: none; /* Oculto por defecto */
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+        body{
+            background-image: url("/assets/img/hero-img.svg");
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Asegura que el body tenga 100% de la altura de la ventana */
+            background-size: cover; /* La imagen cubre el espacio */
+            background-position: center; /* La imagen está centrada */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+        }
+    </style>
+</head>
+<body class="text-center" >
+<main class="form-signin">
+    <form method="post" th:action="@{/processLogin}" onsubmit="return validarInicioDeSesion()" >
+        <h1 style="font-size:40px;color:#413e66" class="sitename">Gestor de Tareas</h1>
+        <br>
+        <h2 class="sitename" style="font-size:30px;color:#1bb1dc">Iniciar Sesión</h2>
+        <br />
+        <div class="form-floating">
+            <input type="email" class="form-control" id="username" name="correo" placeholder="Usuario" >
+            <label for="username">Correo</label>
+        </div>
+        <br>
+        <div class="form-floating">
+                                                                    <!-- requiered autofocus - solicita obligatoriamente llenar el campo-->
+            <input type="password" class="form-control" id="password" name="contrasenia" placeholder="Contraseña"> <!--required autofocus-->
+            <label for="password">Contraseña</label>
+        </div>
+        <!--<h4 th:if="${param.error}" class="form-signin-heading" style="color:red">Acceso denegado</h4>-->
+        <!--param error aparece cuando el usuario o contraseña son incorrectos -->
+        <div id="alerta1" style="justify-content: center;display: none" class="alert alert-danger" role="alert"></div>
+        <div id="alerta2" style="justify-content: center" th:if="${param.error != null}"  class="alert alert-danger" role="alert">Acceso Denegado</div>
+        <div th:if="${msg}" th:text="${msg}" style="text-align:center"  class="alert alert-success" role="alert"></div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
+    </form>
+        <br />
+        <a th:href="@{/}" class="w-100 btn btn-lg btn-primary">Regresar</a>
+    <script>
+        function validarInicioDeSesion() {
+            //en javascript puro se obtiene el valor del input con "Value"
+            //JQUERY --> .val()
+            var correo = document.getElementById("username").value;
+            var contrasenia = document.getElementById("password").value;
+            var alerta1 = document.getElementById("alerta1");
+            //Para igualdad de valor es == y desigual !=
+            //para igualdad de valor y tipo de dato === , desigual !==
+            //verificamos si el campo correo o contraseña es vacio
+            if (correo == "" || contrasenia == "") {
+                //insertamos texto
+                alerta1.innerText = "Debe Completar Ambos Campos";
+                //mostramos la alerta 1
+                alerta1.style.display = "block";
+                // Esperamos 3 segundos antes de ocultar la alerta con la funcion setTimeOut()
+                //esta funcion tiene como parametros
+                // 1. una "function(){ } , donde definimos las instrucciones "
+                // 2. el tiempo de espera antes de ejecutar las instrucciones en ms - milisegundos
+                setTimeout(function() {
+                    // Añadimos la clase para hacer la transición suave
+                    alerta1.classList.add('fade-out');
+
+                    // Ocultamos completamente la alerta después de 0.5 segundos (duración de transición)
+                    setTimeout(function() {
+                        //ocultamos la alerta
+                        alerta1.style.display = 'none';
+                        // Removemos la clase fade-out para que pueda volver a mostrarse correctamente la siguiente vez
+                        alerta1.classList.remove('fade-out');
+                    }, 500); // 500ms = 0.5 segundos para que desaparezca
+                }, 3000); // 3000ms = 3 segundos antes de empezar a ocultar la alerta
+                //con "return false", no se envia el formulario
+                return false;
+            } else {
+                //con "return true", el formulario se envía
+                return true;
+            }
+            //la funcion setTimeOut() , seria el simil de usar
+            //.show().delay().hide() de jquery
+        }
+    </script>
+</main>
+
+<script th:fragment="footer-bootstrap"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+</body>
+</html>
