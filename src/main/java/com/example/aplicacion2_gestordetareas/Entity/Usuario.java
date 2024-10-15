@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "usuarios")
-//Todo objeto que se desee guardar en sesión con java Spring,
+//Todos objeto que se desee guardar en sesión con java Spring,
 //debe ser serializable, es decir, implementar la interfaz Serializable (java.io.Serializable)
 public class Usuario implements Serializable {
 

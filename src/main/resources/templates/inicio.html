@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
@@ -35,14 +35,14 @@
                 <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li>
-            </ul>
+            </ul> -->
             <!--El atributo sec:authorize=”isAnonymous()”
             permite validar si el usuario NO ha iniciado sesión.-->
             <!--similar a th:if, pero para parámetros de Spring Security-->
-            <div sec:authorize="isAnonymous()">
+            <!--<div sec:authorize="isAnonymous()">
                 <a th:href="@{/login}" class="btn btn-primary" type="submit">Iniciar Sesión</a>
                 <a th:href="@{/registro}" class="btn btn-success" type="submit">Registrarse</a>
-            </div>
+            </div> -->
             <!--<form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -50,13 +50,13 @@
 
             <!--El atributo sec:authorize=”isAuthenticated()”
            permite validar si el usuario Sí ha iniciado sesión.-->
-        </div>
+        <!--</div>
     </div>
 </nav>
 <br>
 <div class="container">
-    <h2>Mis Tareas</h2>             <!-- con th:href se pone la ruta completa + parametros en url-->
-    <!--<a class="btn btn-dark mt-4 mb-4" th:href="@{/tareas/nuevo}">Nueva Tarea</a> -->
+    <h2>Mis Tareas</h2>              con th:href se pone la ruta completa + parametros en url
+    <a class="btn btn-dark mt-4 mb-4" th:href="@{/tareas/nuevo}">Nueva Tarea</a>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
     <div th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-danger" role="alert"></div>
     <form method="post" th:action="@{/tareas/buscar}">
@@ -88,7 +88,7 @@
             <td th:text="${tarea.titulo}"></td>
             <td th:text="${tarea.descripcion}"></td>
             <td th:text="${tarea.prioridad.nombre}"></td>
-            <!--formatear la fecha con thymleaf-->
+            formatear la fecha con thymleaf
             <td th:text="${#dates.format(tarea.fechaLimite, 'dd/MM/yyyy')}"></td>
             <td><a th:href="@{'/tareas/editar'+'?id='+${tarea.id}}" class="btn btn-warning">Editar</a>
             </td>
@@ -101,4 +101,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
-</html>
+</html> -->
