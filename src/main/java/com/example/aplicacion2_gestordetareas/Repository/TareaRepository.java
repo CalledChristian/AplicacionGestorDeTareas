@@ -9,7 +9,7 @@ import java.util.List;
 public interface TareaRepository extends JpaRepository<Tarea,Integer> {
 
     //QueryMethods
-   @Query(value="select * from tareas where idUsuario = ?1" , nativeQuery = true)
+    @Query(value="select * from tareas where idUsuario = ?1" , nativeQuery = true)
     List<Tarea> TareasPorUsuario(Integer idUsuario);
 
     @Query(value="select * from tareas where idUsuario = ?1 and (titulo like %?2% or descripcion like %?2%) " , nativeQuery = true)

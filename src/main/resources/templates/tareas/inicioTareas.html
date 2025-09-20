@@ -13,12 +13,8 @@
     <style>
         body{
             background-image: url("/assets/assets/img/template/Rapid/hero-bg.jpg");
-            margin: 0;
-            padding: 0;
-            height: 100vh; /* Asegura que el body tenga 100% de la altura de la ventana */
-            background-size: cover; /* La imagen cubre el espacio */
-            background-position: center; /* La imagen está centrada */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-size: cover;
+            background-position: center;
         }
         table {
             border-collapse: separate; /* Necesario para que los bordes se apliquen correctamente */
@@ -84,6 +80,7 @@
                 <!--<input sec:authorize="hasAnyAuthority('Super Usuario')" id="botonColor" type="submit" class="btn btn-warning" value="Cambiar de Fondo"> -->
                 </li>
             </ul>
+
             <!--El atributo sec:authorize=”isAnonymous()”
             permite validar si el usuario NO ha iniciado sesión.-->
             <!--similar a th:if, pero para parámetros de Spring Security-->
@@ -103,7 +100,7 @@
                 <!--forma2-->
                 <!--En Spring Security, el enlace a la ruta /logout debe ser un formulario.-->
                 <form th:action="@{/logout}" method="post">
-                    <span style="color:white;margin-right:10px" th:text="|Bienvenido ${session.usuario.nombre} ${session.usuario.apellido}|"></span>
+                    <span style="color:white;margin-right:10px" th:text="|Bienvenido ${session.usuario.nombre} ${session.usuario.apellido} PIPIPPIPI sdsfsdfdsfsdf|"></span>
                     <input class="btn btn-success" type="submit" value="Cerrar Sesión">
                 </form>
             </div>
@@ -169,7 +166,7 @@
         var alerta3 = $("#alert3");
 
         $("#form1").submit(function (event) {
-            //accedemos al elemento del form (buscador) y obtenemos su valor con .val();
+            //accedemos al elemento input del form (buscador) y obtenemos su valor con .val();
             var texto = $("#text1").val();
             var alerta1 = $("#alert1");
 
@@ -204,7 +201,7 @@
         });
         //para la alerta 2 que se muestra cuando no hay coincidencias de busqueda
         //la mantenemos por 4 segundos con delay y la ocultamos con hide en 0.5seg
-        alerta2.delay(3000).hide(500);
+        alerta2.delay(4000).hide(500);
         //para la alerta 3 que se muestra cuando creamos o editamos tarea
         //la mantenemos por 4 segundos con delay y la ocultamos con hide en 0.5seg
         alerta3.delay(4000).hide(500);

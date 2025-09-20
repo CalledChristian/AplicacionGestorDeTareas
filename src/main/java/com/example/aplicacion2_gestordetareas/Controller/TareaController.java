@@ -62,7 +62,6 @@ public class TareaController {
     public String guardarTarea(Tarea tarea,RedirectAttributes redirectAttributes ) {
         //dado que mapeamos todos los atributos del objeto = name en el formulario
         //Data binding
-
         //ahora verificamos si la tarea es nueva o ya existe
 
         if(tarea.getId()!=null) {

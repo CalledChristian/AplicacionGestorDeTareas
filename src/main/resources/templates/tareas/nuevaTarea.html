@@ -87,6 +87,8 @@
         </div>
         <input name="usuario" th:value="${usuario.id}" type="hidden">
         <br>
+        <!--Observamos que el orden de los campos no esta exactamente igual como en el Bean "Tarea",
+        pero los names = atributos del Bean , entonces se mapea igualmente el data binding-->
         <div id="alert" style="display: none" class="alert alert-danger" role="alert"></div>
         <a th:href="@{/tareas}" class="btn btn-danger">Cancelar</a>
         <button type="submit" class="btn btn-primary">Guardar</button>

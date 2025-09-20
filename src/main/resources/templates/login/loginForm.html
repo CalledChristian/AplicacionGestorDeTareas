@@ -26,12 +26,8 @@
         }
         body{
             background-image: url("/assets/img/hero-img.svg");
-            margin: 0;
-            padding: 0;
-            height: 100vh; /* Asegura que el body tenga 100% de la altura de la ventana */
-            background-size: cover; /* La imagen cubre el espacio */
-            background-position: center; /* La imagen está centrada */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>
@@ -48,13 +44,13 @@
         </div>
         <br>
         <div class="form-floating">
-                                                                    <!-- requiered autofocus - solicita obligatoriamente llenar el campo-->
+                                                                    <!-- required autofocus - solicita obligatoriamente llenar el campo-->
             <input type="password" class="form-control" id="password" name="contrasenia" placeholder="Contraseña"> <!--required autofocus-->
             <label for="password">Contraseña</label>
         </div>
         <!--<h4 th:if="${param.error}" class="form-signin-heading" style="color:red">Acceso denegado</h4>-->
         <!--param error aparece cuando el usuario o contraseña son incorrectos -->
-        <div id="alerta1" style="justify-content: center;display: none" class="alert alert-danger" role="alert"></div>
+        <div id="alerta1" style="justify-content: center; display: none" class="alert alert-danger" role="alert"></div>
         <div id="alerta2" style="justify-content: center" th:if="${param.error != null}"  class="alert alert-danger" role="alert">Acceso Denegado</div>
         <div th:if="${msg}" th:text="${msg}" style="text-align:center"  class="alert alert-success" role="alert"></div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>

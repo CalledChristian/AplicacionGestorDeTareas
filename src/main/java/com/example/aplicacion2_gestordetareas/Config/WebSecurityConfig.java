@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     final UsuarioRepository usuarioRepository;
 
     //Para indicarle a Spring security que utilice la base de datos
-    // para autenticar a los usuarios
+    //para autenticar a los usuarios
     final DataSource dataSource;
     /*Se debe hacer uso de DefaultSavedRequest, el cual nos indica
     si el usuario está viniendo de la página mediante el link de login
@@ -59,8 +59,6 @@ public class WebSecurityConfig {
     }
 
 
-
-
     /*Para proteger solo ciertas rutas en Spring Security se debe implementar
     el método SecurityFilterChain filterChain(HttpSecurity http) y anotado con @Bean,
     el cual crea un filtro que se aplica a todos los requests antes de llegar
@@ -70,7 +68,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //formulario por defecto de spring security
         http.formLogin()
-                //ruta donde será estará la ventana de login (getmapping)
+                //ruta donde estará la ventana de login (getmapping)
                 .loginPage("/login")
                 //ruta donde se envía el formulario de login (postmapping)
                 .loginProcessingUrl("/processLogin")
@@ -80,7 +78,7 @@ public class WebSecurityConfig {
                 .successHandler((request, response, authentication) -> {
 
                     //Spring session
-                    HttpSession session = request.getSession(); //autenthicacion.getName() devuelve el username que es correo en este caso
+                    HttpSession session = request.getSession(); //authentication.getName() devuelve el username que es el correo en este caso
                     session.setAttribute("usuario",usuarioRepository.findByCorreo(authentication.getName()));
 
                     DefaultSavedRequest defaultSavedRequest =
@@ -98,7 +96,7 @@ public class WebSecurityConfig {
                         if (rol.equals("Super Usuario")) {
                             response.sendRedirect("/tareas");
                         } else if(rol.equals("Administrador")){
-                                response.sendRedirect("/tareas");
+                            response.sendRedirect("/tareas");
                         } else {
                             response.sendRedirect("/tareas");
                         }
@@ -107,7 +105,7 @@ public class WebSecurityConfig {
 
         //cerrar sesión
 
-       //Luego de cerrar sesión,
+        //Luego de cerrar sesión,
         //el sistema lo envía a la página de inicio de sesión (login).
         //http.logout();
 
@@ -125,7 +123,7 @@ public class WebSecurityConfig {
                 //ruta(s) a ser protegidas según el rol
                 //("/ruta") --> proteger solo esta ruta
                 //("/ruta/*") --> proteger hasta un sub nivel de la ruta
-                //("/ruta/**") --> proteger toda ruta con comienze con "/ruta"
+                //("/ruta/**") --> proteger toda ruta que comienze con "/ruta"
 
                 //En nuestro caso queremos que la ruta /tareas sea protegida , entonces
                 .requestMatchers("/tareas","/tareas/**").hasAnyAuthority("Super Usuario", "Administrador","Usuario")
