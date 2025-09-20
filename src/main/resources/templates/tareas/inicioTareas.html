@@ -100,7 +100,7 @@
                 <!--forma2-->
                 <!--En Spring Security, el enlace a la ruta /logout debe ser un formulario.-->
                 <form th:action="@{/logout}" method="post">
-                    <span style="color:white;margin-right:10px" th:text="|Bienvenido ${session.usuario.nombre} ${session.usuario.apellido} PIPIPPIPI sdsfsdfdsfsdf|"></span>
+                    <span style="color:white;margin-right:10px" th:text="|Bienvenido ${session.usuario.nombre} ${session.usuario.apellido}|"></span>
                     <input class="btn btn-success" type="submit" value="Cerrar Sesión">
                 </form>
             </div>
