@@ -59,7 +59,7 @@ public class TareaController {
     @Transactional
     @PostMapping("/guardar")
     //Aplicando Mapeo de Objeto en Formulario: Data Binding
-    public String guardarTarea(Tarea tarea,RedirectAttributes redirectAttributes ) {
+    public String guardarTarea(Tarea tarea,RedirectAttributes redirectAttributes) {
         //dado que mapeamos todos los atributos del objeto = name en el formulario
         //Data binding
         //ahora verificamos si la tarea es nueva o ya existe
@@ -78,9 +78,9 @@ public class TareaController {
     }
 
 
-    @Transactional
+    //@Transactional
     @GetMapping("/editar")
-    //Aplicando Mapeo de Objeto en Formulario: Data Binding
+    //Aplicando Mapeo de Objeto en Formulario: Data Binding - RequestParam: variables en url , apartir de ?id=43&cost=533&.....
     public String editarTarea(@RequestParam("id") int idTarea , Model model) {
         Optional<Tarea> tarea = tareaRepository.findById(idTarea);
         if(tarea.isPresent()) {
@@ -110,8 +110,10 @@ public class TareaController {
         return "redirect:/tareas";
     }
 
-    @Transactional
+    @Transactional //valida si una operacion se completo con exito, sino anula los efectos realizados
+    //usado principalmente en transacciones bancarias
     @PostMapping("/buscar")
+    //@RequestParam , tbm puede venir de variables (names) de un formulario
     public String buscarTarea(@RequestParam("idUser") int idUsuario,@RequestParam("texto") String texto, RedirectAttributes redirectAttributes, Model model) {
 
         //Si el texto ingresado del buscador No es vacio (Not Empty)

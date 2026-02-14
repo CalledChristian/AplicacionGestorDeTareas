@@ -8,11 +8,12 @@ import java.sql.Date;
 
 @Getter
 @Setter
+//Etiquetas Lombok
 @Entity
 @Table(name = "tareas")
 public class Tarea {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincremental
     @Column(name = "idTarea", nullable = false)
     private Integer id;
 
